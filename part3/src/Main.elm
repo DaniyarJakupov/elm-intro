@@ -33,7 +33,11 @@ update msg model =
                 { model | foo = bar }
 
     -}
-    model
+    if msg.description == "ClickedTag" then
+        { model | selectedTag = msg.data }
+
+    else
+        model
 
 
 
@@ -43,15 +47,10 @@ update msg model =
 view model =
     let
         {- 👉 TODO: Filter the articles down to only the ones
-                    that include the currently selected tag.
-
-           💡 HINT: Replace `True` below with something involving
-                    `List.member`, `article.tags`, and `model.selectedTag`
-
-                    Docs for List.member: http://package.elm-lang.org/packages/elm-lang/core/latest/List#member
+           that include the currently selected tag.
         -}
         articles =
-            List.filter (\article -> True)
+            List.filter (\article -> List.member model.selectedTag article.tags)
                 model.allArticles
 
         feed =
@@ -101,16 +100,11 @@ viewTag selectedTagName tagName =
     in
     button
         [ class ("tag-pill " ++ otherClass)
+        , onClick { description = "ClickedTag", data = tagName }
 
         {- 👉 TODO: Add an `onClick` handler which sends a msg
-                    that our `update` function above will use
-                    to set the currently selected tag to `tagName`.
-
-           💡 HINT: It should look something like this:
-
-                    , onClick { description = … , data = … }
-
-                    👆 Don't forget to add a comma before `onClick`!
+           that our `update` function above will use
+           to set the currently selected tag to `tagName`.
         -}
         ]
         [ text tagName ]
