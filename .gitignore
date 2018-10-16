@@ -1,6 +1,7 @@
 node_modules
 elm-stuff
 app.js
+elm.js
 .DS_Store
 yarn.lock
 package-lock.json
